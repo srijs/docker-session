@@ -83,6 +83,16 @@ func (s *Session) Run(c Cmd) error {
   })
 }
 
+func (s *Session) Save() (string, error) {
+  img, err := s.client.CommitContainer(docker.CommitContainerOptions{
+    Container: s.container.ID,
+  })
+  if err != nil {
+    return "", err
+  }
+  return img.ID, nil
+}
+
 func (s *Session) Close() error {
   opts := docker.RemoveContainerOptions{
     ID: s.container.ID,
